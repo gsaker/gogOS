@@ -1,0 +1,1 @@
+BIOS loads boot sector to adress 0x7c00
