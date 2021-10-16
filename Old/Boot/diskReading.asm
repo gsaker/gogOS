@@ -12,21 +12,24 @@ loadDisk:
     pop dx ; dx contains number of sectors to read
     cmp al, dh ; check if number of sectors read = number of sectors meant to be read
     jne sectorError
+    mov bx, SUCCESS ; add string to register
+    call printString16 ; print string func
     popa
     ret
 diskError:
     mov bx, DISK_ERROR ; add string to register
-    call printString ; print string func
-    call printNewLine ; new line
+    call printString16 ; print string func
+    call printNewLine16 ; new line
     mov dh,ah ; ah = error code
-    call printHex ; print error code
+    call printHex16 ; print error code
     jmp diskLoop ; back to diskLoop
 sectorError:
     mov bx, SECTOR_ERROR ;move string to register
-    call printString ; print string
+    call printString16 ; print string
 
 diskLoop:
     jmp $
 
 DISK_ERROR: db "Disk read error", 0
-SECTORS_ERROR: db "Incorrect number of sectors read", 0
+SECTOR_ERROR: db "Incorrect number of sectors read", 0
+SUCCESS: db "SUCCESS", 0
