@@ -8,11 +8,27 @@ KERNEL_OFFSET equ 0x1000 ; The same one we used when linking the kernel
     mov bx, MSG_16_MODE
     call printString16
     call printNewLine16
+    call hideCursor
     call loadKernel
     call switch32
     jmp $
 
+
 ;%include "printString16.asm"
+hideCursor:
+    push eax
+	push edx
+ 
+	mov dx, 0x3D4
+	mov al, 0xA	
+	out dx, al
+ 
+	inc dx
+	mov al, 0x20	
+	out dx, al
+ 
+	pop edx
+	pop eax
 printString16:
     pusha
     printFunc16:

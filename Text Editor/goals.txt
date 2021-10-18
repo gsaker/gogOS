@@ -1,0 +1,15 @@
+Long term goals
+- Better append including append to line
+- Different file extensions
+- List save location
+- Character/word counting
+- Mutiple lines
+- Delete lines from files
+- Replace lines 
+- Command based system? /
+- More pretty UI
+- Merge files
+- Rename Files
+- Encryption??? 
+- Decryption
+- Delete files
