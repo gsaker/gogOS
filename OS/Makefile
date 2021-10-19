@@ -9,10 +9,10 @@ kernel.bin: kernelEntry.o kernel.o
 kernel.elf: kernelEntry.o kernel.o
 	i686-elf-ld -o $@ -Ttext 0x1000 $^
 
-kernelEntry.o: kernelEntry.asm
+kernelEntry.o: boot/kernelEntry.asm
 	nasm $< -f elf -o $@
 
-kernel.o: kernel.c
+kernel.o: kernel/kernel.c
 	i686-elf-gcc -ffreestanding -c $< -o $@
 
 # Rule to disassemble the kernel - may be useful to debug
@@ -20,7 +20,7 @@ debug: os-image.bin kernel.elf
 	qemu-system-x86_64 -s -fda os-image.bin &
 	${GDB} -ex "target remote localhost:1234" -ex "symbol-file kernel.elf"
 
-bootsect.bin: boot.asm
+bootsect.bin: boot/boot.asm
 	nasm $< -f bin -o $@
 
 os-image.bin: bootsect.bin kernel.bin
@@ -30,4 +30,4 @@ run: os-image.bin
 	qemu-system-x86_64 -fda $<
 
 clean:
-	rm *.bin *.o *.dis
+	rm *.bin *.o

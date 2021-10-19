@@ -1,0 +1,2 @@
+#define MAXCHAR 1000
+#define WHITE_ON_BLACK 0x0f

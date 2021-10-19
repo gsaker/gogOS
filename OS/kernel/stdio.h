@@ -1,26 +1,20 @@
-#define MAXCHAR 1000
-#define WHITE_ON_BLACK 0x0f
+#include "vars.h"
 
-char printChar(char charToPrint [MAXCHAR], int row, int column) {
+char strLen(char stringToCheck []){
+    int i;
+    for (i = 0; stringToCheck[i] != '\0'; ++i);
+    return i;
+}
+char printChar(char charToPrint [], int row, int column) {
     char* videoMemory = (char*) 0xb8000;
     int currentChar = 1;
-    int length;
-    for (length = 0; charToPrint[length] != '\0'; ++length);
-    for (currentChar = 1; currentChar <= length; currentChar++){
+    for (currentChar = 1; currentChar <= strLen(charToPrint); currentChar++){
         int offset = (row*80+column)*2;
         videoMemory[offset] = charToPrint[currentChar-1];
         videoMemory[offset+1] = WHITE_ON_BLACK;
         column = column + 1;
     }
 }
-/*
-char strLen(char stringToCheck [MAXCHAR]){
-    int i;
-    for (i = 0; stringToCheck[i] != '\0'; ++i);
-    return i;
-}
-*/
-
 void clearScreen(){
     int column = 0;
     int row = 0;
@@ -40,16 +34,3 @@ int clearLine(int row){
         videoMemory[offset] = 0;
     }
 }
-
-
-void main() {
-    int i = 0;
-    clearScreen();
-    printChar("abcdefgjsdafdsdaf",0,0);
-    //for (i = 0; i < 25; i++){
-        //printChar("abcdefghij",i,0);
-        //printChar("abcdefghij",i,0);
-    clearLine(1);
-}
-
-
