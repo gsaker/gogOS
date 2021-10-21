@@ -12,7 +12,7 @@ kernel.elf: kernelEntry.o kernel.o
 kernelEntry.o: boot/kernelEntry.asm
 	nasm $< -f elf -o $@
 
-kernel.o: kernel/kernel.c
+kernel.o: kernel/kernel.cpp
 	i686-elf-gcc -ffreestanding -c $< -o $@
 
 # Rule to disassemble the kernel - may be useful to debug
