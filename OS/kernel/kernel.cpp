@@ -1,13 +1,13 @@
-#include "string.hpp"
-
-//#include "stdio.hpp"
+#include "stdio.hpp"
+#include "messages.hpp"
+//#include "vars.hpp"
 
 extern "C" void kernel_main(void) {
-    int i = 71000002;
+    int i = 102;
     clearScreen();
-    //char aChar;
+    print("abcdefghijklmnopabcdefghijklmnopabcdefghijklmnopabcdefghijklmnopabcdefghijklmnopabcdefghijklmnop");
+    print("ello");
     printInt(i);
-    //str(i);
     return;
 }
 //void main() {
