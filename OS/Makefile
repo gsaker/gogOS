@@ -1,3 +1,5 @@
+
+
 # $@ = target file
 # $< = first dependency
 # $^ = all dependencies
@@ -31,3 +33,4 @@ run: os-image.bin
 
 clean:
 	rm *.bin *.o
+	

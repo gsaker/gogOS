@@ -1,7 +1,5 @@
 #include "vars.hpp"
 
-
-
 char strLen(char stringToCheck []){  
     int i; //set up var
     for (i = 0; stringToCheck[i] != '\0'; ++i); //increment through string until null character reached

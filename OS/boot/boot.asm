@@ -200,5 +200,6 @@ BEGIN_32:
     call printString ;print
     call KERNEL_OFFSET ;pass to kernel
     jmp $ ; back here whern kernel has finished
+
 times 510 - ($-$$) db 0
 dw 0xaa55
