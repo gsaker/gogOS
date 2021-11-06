@@ -1,10 +1,18 @@
-#include "vars.h"
 
-char strLen(char stringToCheck []){  
-    int i; //set up var
-    for (i = 0; stringToCheck[i] != '\0'; ++i); //increment through string until null character reached
-    return i; // return value
-}
+#define MAXCHAR 1000
+#define WHITE_ON_BLACK 0x4f
+int currentColumn = 0;
+int currentRow = 0;
+
+void clearLine(int row);
+
+void printStr(char stringToPrint [], int row, int column);
+void clearScreen();
+void clearLine(int row);
+void newLine();
+void print(char stringToPrint[]);
+void printInt(int number);
+
 void printStr(char stringToPrint [], int row, int column) {
     char* videoMemory = (char*) 0xb8000; //set up pointer to VGA video memory adress
                                                        

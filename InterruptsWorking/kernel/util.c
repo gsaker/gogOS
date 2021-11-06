@@ -32,16 +32,15 @@ void int_to_ascii(int n, char str[]) {
 /* K&R */
 void reverse(char s[]) {
     int c, i, j;
-    for (i = 0, j = strlen(s)-1; i < j; i++, j--) {
+    for (i = 0, j = strLen(s)-1; i < j; i++, j--) {
         c = s[i];
         s[i] = s[j];
         s[j] = c;
     }
 }
-
-/* K&R */
-int strlen(char s[]) {
-    int i = 0;
-    while (s[i] != '\0') ++i;
-    return i;
+int strLen(char stringToCheck []){  
+    int i; //set up var
+    for (i = 0; stringToCheck[i] != '\0'; ++i); //increment through string until null character reached
+    return i; // return value
 }
+

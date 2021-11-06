@@ -1,5 +1,4 @@
 #include "../cpu/isr.h"
-//#include "../cpu/timer.h"
 #include "../drivers/stdio.h"
 #include "../drivers/keyboard.h"
 

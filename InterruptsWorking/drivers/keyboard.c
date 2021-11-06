@@ -3,17 +3,18 @@
 #include "../cpu/isr.h"
 
 static void keyboard_callback(registers_t regs) {
-    /* The PIC leaves us the scancode in port 0x60 */
-    /*u8 scancode = port_byte_in(0x60);
+    //The PIC leaves us the scancode in port 0x60 
+    char scancode = port_byte_in(0x60);
     char *sc_ascii;
     int_to_ascii(scancode, sc_ascii);
-    kprint("Keyboard scancode: ");
-    kprint(sc_ascii);
-    kprint(", ");
-    print_letter(scancode);
-    kprint("\n");
-    */
-   print("KEY");
+    //print("Keyboard scancode: ");
+    print(sc_ascii);
+    //print(", ");
+    //print_letter(scancode);
+    //print("\n");
+
+    //print("KEY");
+    //clearScreen();
 }
 
 void init_keyboard() {
@@ -21,193 +22,188 @@ void init_keyboard() {
 }
 
 void print_letter(u8 scancode) {
-    /*
+    
     switch (scancode) {
         case 0x0:
-            kprint("ERROR");
+            print("ERROR");
             break;
         case 0x1:
-            kprint("ESC");
+            print("ESC");
             break;
         case 0x2:
-            kprint("1");
+            print("1");
             break;
         case 0x3:
-            kprint("2");
+            print("2");
             break;
         case 0x4:
-            kprint("3");
+            print("3");
             break;
         case 0x5:
-            kprint("4");
+            print("4");
             break;
         case 0x6:
-            kprint("5");
+            print("5");
             break;
         case 0x7:
-            kprint("6");
+            print("6");
             break;
         case 0x8:
-            kprint("7");
+            print("7");
             break;
         case 0x9:
-            kprint("8");
+            print("8");
             break;
         case 0x0A:
-            kprint("9");
+            print("9");
             break;
         case 0x0B:
-            kprint("0");
+            print("0");
             break;
         case 0x0C:
-            kprint("-");
+            print("-");
             break;
         case 0x0D:
-            kprint("+");
+            print("+");
             break;
         case 0x0E:
-            kprint("Backspace");
+            print("Backspace");
             break;
         case 0x0F:
-            kprint("Tab");
+            print("Tab");
             break;
         case 0x10:
-            kprint("Q");
+            print("Q");
             break;
         case 0x11:
-            kprint("W");
+            print("W");
             break;
         case 0x12:
-            kprint("E");
+            print("E");
             break;
         case 0x13:
-            kprint("R");
+            print("R");
             break;
         case 0x14:
-            kprint("T");
+            print("T");
             break;
         case 0x15:
-            kprint("Y");
+            print("Y");
             break;
         case 0x16:
-            kprint("U");
+            print("U");
             break;
         case 0x17:
-            kprint("I");
+            print("I");
             break;
         case 0x18:
-            kprint("O");
+            print("O");
             break;
         case 0x19:
-            kprint("P");
+            print("P");
             break;
 		case 0x1A:
-			kprint("[");
+			print("[");
 			break;
 		case 0x1B:
-			kprint("]");
+			print("]");
 			break;
 		case 0x1C:
-			kprint("ENTER");
+			print("ENTER");
 			break;
 		case 0x1D:
-			kprint("LCtrl");
+			print("LCtrl");
 			break;
 		case 0x1E:
-			kprint("A");
+			print("A");
 			break;
 		case 0x1F:
-			kprint("S");
+			print("S");
 			break;
         case 0x20:
-            kprint("D");
+            print("D");
             break;
         case 0x21:
-            kprint("F");
+            print("F");
             break;
         case 0x22:
-            kprint("G");
+            print("G");
             break;
         case 0x23:
-            kprint("H");
+            print("H");
             break;
         case 0x24:
-            kprint("J");
+            print("J");
             break;
         case 0x25:
-            kprint("K");
+            print("K");
             break;
         case 0x26:
-            kprint("L");
+            print("L");
             break;
         case 0x27:
-            kprint(";");
+            print(";");
             break;
         case 0x28:
-            kprint("'");
+            print("'");
             break;
         case 0x29:
-            kprint("`");
+            print("`");
             break;
 		case 0x2A:
-			kprint("LShift");
+			print("LShift");
 			break;
 		case 0x2B:
-			kprint("\\");
+			print("\\");
 			break;
 		case 0x2C:
-			kprint("Z");
+			print("Z");
 			break;
 		case 0x2D:
-			kprint("X");
+			print("X");
 			break;
 		case 0x2E:
-			kprint("C");
+			print("C");
 			break;
 		case 0x2F:
-			kprint("V");
+			print("V");
 			break;
         case 0x30:
-            kprint("B");
+            print("B");
             break;
         case 0x31:
-            kprint("N");
+            print("N");
             break;
         case 0x32:
-            kprint("M");
+            print("M");
             break;
         case 0x33:
-            kprint(",");
+            print(",");
             break;
         case 0x34:
-            kprint(".");
+            print(".");
             break;
         case 0x35:
-            kprint("/");
+            print("/");
             break;
         case 0x36:
-            kprint("Rshift");
+            print("Rshift");
             break;
         case 0x37:
-            kprint("Keypad *");
+            print("Keypad *");
             break;
         case 0x38:
-            kprint("LAlt");
+            print("LAlt");
             break;
         case 0x39:
-            kprint("Spc");
+            print("Spc");
             break;
         default:
 
-            if (scancode <= 0x7f) {
-                kprint("Unknown key down");
-            } else if (scancode <= 0x39 + 0x80) {
-                kprint("key up ");
-                print_letter(scancode - 0x80);
-            } else kprint("Unknown key up");
+            print("Unknown");
             break;
     }
-    */
+    
    print("KEY");
 }
 
