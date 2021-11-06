@@ -7,12 +7,12 @@ u32 tick = 0;
 
 static void timer_callback(registers_t regs) {
     tick++;
-    print("Tick: ");
+    kprint("Tick: ");
     
     char tick_ascii[256];
     int_to_ascii(tick, tick_ascii);
-    print(tick_ascii);
-    print("\n");
+    kprint(tick_ascii);
+    kprint("\n");
 }
 
 void init_timer(u32 freq) {
