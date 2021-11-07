@@ -110,9 +110,12 @@ global irq15
 
 ; 0: Divide By Zero Exception
 isr0:
+    ;mov bx, MSG
+    ;call printString
     cli
     push byte 0
     push byte 0
+    ;jmp $
     jmp isr_common_stub
 
 ; 1: Debug Exception
@@ -423,3 +426,26 @@ irq15:
 	push byte 47
 	jmp irq_common_stub
 
+printString:
+    pusha
+    mov edx, VIDEO_MEMORY
+
+printStringLoop:
+    mov al, [ebx] ; [ebx] is the address of our character
+    mov ah, WHITE_ON_BLACK
+
+    cmp al, 0 ; check if end of string
+    je printStringEnd
+
+    mov [edx], ax ; store character + attribute in video memory
+    add ebx, 1 ; next char
+    add edx, 2 ; next video memory position
+
+    jmp printStringLoop
+
+printStringEnd:
+    popa
+    ret
+VIDEO_MEMORY equ 0xb8000
+WHITE_ON_BLACK equ 0x0f ; the color byte for each character
+MSG db "MSG", 0

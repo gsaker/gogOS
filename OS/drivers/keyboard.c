@@ -7,14 +7,9 @@ static void keyboard_callback(registers_t regs) {
     char scancode = port_byte_in(0x60);
     char *sc_ascii;
     int_to_ascii(scancode, sc_ascii);
-    //print("Keyboard scancode: ");
+    print("KEY:");
     print(sc_ascii);
-    //print(", ");
-    //print_letter(scancode);
-    //print("\n");
-
-    //print("KEY");
-    //clearScreen();
+    newLine();
 }
 
 void init_keyboard() {

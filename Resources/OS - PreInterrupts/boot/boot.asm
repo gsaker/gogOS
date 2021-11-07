@@ -190,7 +190,7 @@ loadKernel:
     call printNewLine16
 
     mov bx, KERNEL_OFFSET ; set to place where kernel is stored
-    mov dh, 32 
+    mov dh, 2 
     mov dl, [BOOT_DRIVE] ; set to boot drive
     call loadDisk
     ret

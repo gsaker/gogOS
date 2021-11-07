@@ -1,36 +1,46 @@
+C_SOURCES = $(wildcard kernel/*.c drivers/*.c cpu/*.c libc/*.c)
+HEADERS = $(wildcard kernel/*.h drivers/*.h cpu/*.h libc/*.h)
+# Nice syntax for file extension replacement
+OBJ = ${C_SOURCES:.c=.o cpu/interrupt.o} 
 
-
-# $@ = target file
-# $< = first dependency
-# $^ = all dependencies
+# Change this if your cross-compiler is somewhere else
+CC = i686-elf-gcc
 GDB = /usr/local/i386elfgcc/bin/i386-elf-gdb
-all: run clean
+# -g: Use debugging symbols in gcc
+CFLAGS = -g 
+run: runemu clean
+# First rule is run by default
+os-image.bin: boot/boot.bin kernel.bin
+	cat $^ > os-image.bin
 
-kernel.bin: kernelEntry.o kernel.o
+# '--oformat binary' deletes all symbols as a collateral, so we don't need
+# to 'strip' them manually on this case
+kernel.bin: boot/kernelEntry.o ${OBJ}
 	i686-elf-ld -o $@ -Ttext 0x1000 $^ --oformat binary
-kernel.elf: kernelEntry.o kernel.o
-	i686-elf-ld -o $@ -Ttext 0x1000 $^
 
-kernelEntry.o: boot/kernelEntry.asm
-	nasm $< -f elf -o $@
+# Used for debugging purposes
+kernel.elf: boot/kernelEntry.o ${OBJ}
+	i686-elf-ld -o $@ -Ttext 0x1000 $^ 
 
-kernel.o: kernel/kernel.cpp
-	i686-elf-g++ -ffreestanding -c $< -o $@
+runemu: os-image.bin
+	qemu-system-x86_64 -fda os-image.bin
 
-# Rule to disassemble the kernel - may be useful to debug
+# Open the connection to qemu and load our kernel-object file with symbols
 debug: os-image.bin kernel.elf
-	qemu-system-x86_64 -s -fda os-image.bin &
+	qemu-system-i386 -s -fda os-image.bin -d guest_errors,int &
 	${GDB} -ex "target remote localhost:1234" -ex "symbol-file kernel.elf"
 
-bootsect.bin: boot/boot.asm
+# Generic rules for wildcards
+# To make an object, always compile from its .c
+%.o: %.c ${HEADERS}
+	${CC} ${CFLAGS} -ffreestanding -c $< -o $@
+
+%.o: %.asm
+	nasm $<  -f elf -o $@
+
+%.bin: %.asm
 	nasm $< -f bin -o $@
 
-os-image.bin: bootsect.bin kernel.bin
-	cat $^ > $@
-
-run: os-image.bin
-	qemu-system-x86_64 -fda $<
-
 clean:
-	rm *.bin *.o
-	
+	rm -rf *.bin *.dis *.o os-image.bin *.elf
+	rm -rf kernel/*.o boot/*.bin drivers/*.o boot/*.o cpu/*.o
