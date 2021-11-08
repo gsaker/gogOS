@@ -15,16 +15,16 @@ typedef struct { //struct = collection of variables
      * Bits 6-5: Privilege level of caller (0=kernel..3=user)
      * Bit 4: Set to 0 for interrupt gates
      * Bits 3-0: bits 1110 = decimal 14 = "32 bit interrupt gate" */
-    u8 flags; //stores interrupt type_attr
+    u8 flags; //stores interrupt type_attr with values above
     u16 high_offset; //offset 16-31 bits
-} __attribute__((packed)) idt_gate_t ;
+} __attribute__((packed)) idt_gate_t ; //packed means there will be no padding between the struct
 
 /* A pointer to the array of interrupt handlers.
  * Assembly instruction 'lidt' will read it */
 typedef struct {
-    u16 limit;
-    u32 base;
-} __attribute__((packed)) idt_register_t;
+    u16 limit; //top of interrupt handlers
+    u32 base; //bottom of interrupt handlers
+} __attribute__((packed)) idt_register_t; //packed means there will be no padding between the struct
 
 #define IDT_ENTRIES 256
 idt_gate_t idt[IDT_ENTRIES];
