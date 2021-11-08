@@ -1,16 +1,15 @@
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef TYPES_H //only runs if TYPES_H is not already defined
+#define TYPES_H //Macro definition
 
-/* Instead of using 'chars' to allocate non-character bytes,
- * we will use these new type with no semantic meaning */
-typedef unsigned int   u32;
-typedef          int   s32;
-typedef unsigned short u16;
-typedef          short s16;
-typedef unsigned char  u8;
-typedef          char  s8;
+// Unsigned = no minus sign
+typedef unsigned int   u32; //4 bytes (unsigned)
+typedef          int   s32; //4 bytes (signed)
+typedef unsigned short u16; //2 bytes (unsigned)
+typedef          short s16; //2 bytes (signed)
+typedef unsigned char  u8; //1 byte (unsigned)
+typedef          char  s8; //1 byte (signed)
 
-#define low_16(address) (u16)((address) & 0xFFFF)
-#define high_16(address) (u16)(((address) >> 16) & 0xFFFF)
+#define low_16(address) (u16)((address) & 0xFFFF) //gets low value of variable, bitwise & 
+#define high_16(address) (u16)(((address) >> 16) & 0xFFFF) //gets high value of variable
 
-#endif
+#endif //ends if 

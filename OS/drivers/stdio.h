@@ -24,6 +24,8 @@ void printStr(char stringToPrint [], int row, int column) {
         if (column > 79){ //make sure string moves to next line correctly
             column = 0;
             row += 1;
+            currentColumn = 0;
+            currentRow += 1;
         }
     }
 }

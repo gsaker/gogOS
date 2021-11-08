@@ -3,21 +3,20 @@
 
 #include "types.h"
 
-/* Segment selectors */
-#define KERNEL_CS 0x08
+#define KERNEL_CS 0x08 //code segment??
 
 /* How every interrupt gate (handler) is defined */
-typedef struct {
-    u16 low_offset; /* Lower 16 bits of handler function address */
-    u16 sel; /* Kernel segment selector */
+typedef struct { //struct = collection of variables
+    u16 low_offset; //offset 0-15 bites
+    u16 sel; //code segment selector
     u8 always0;
     /* First byte
      * Bit 7: "Interrupt is present"
      * Bits 6-5: Privilege level of caller (0=kernel..3=user)
      * Bit 4: Set to 0 for interrupt gates
      * Bits 3-0: bits 1110 = decimal 14 = "32 bit interrupt gate" */
-    u8 flags; 
-    u16 high_offset; /* Higher 16 bits of handler function address */
+    u8 flags; //stores interrupt type_attr
+    u16 high_offset; //offset 16-31 bits
 } __attribute__((packed)) idt_gate_t ;
 
 /* A pointer to the array of interrupt handlers.

@@ -4,12 +4,14 @@
 
 static void keyboard_callback(registers_t regs) {
     //The PIC leaves us the scancode in port 0x60 
-    char scancode = port_byte_in(0x60);
+    char scancode = readPort(0x60);
+    int scancodeInt = scancode;
     char *sc_ascii;
-    int_to_ascii(scancode, sc_ascii);
-    print("KEY:");
-    print(sc_ascii);
-    newLine();
+    if (scancode == 0x1); {    
+        int_to_ascii(scancode, sc_ascii);
+        print_letter(scancode);
+    }
+
 }
 
 void init_keyboard() {
@@ -23,7 +25,6 @@ void print_letter(u8 scancode) {
             print("ERROR");
             break;
         case 0x1:
-            print("ESC");
             break;
         case 0x2:
             print("1");
@@ -194,11 +195,8 @@ void print_letter(u8 scancode) {
             print("Spc");
             break;
         default:
-
-            print("Unknown");
             break;
     }
     
-   print("KEY");
 }
 
