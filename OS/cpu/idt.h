@@ -19,16 +19,15 @@ typedef struct { //struct = collection of variables
     u16 high_offset; //offset 16-31 bits
 } __attribute__((packed)) idt_gate_t ; //packed means there will be no padding between the struct
 
-/* A pointer to the array of interrupt handlers.
- * Assembly instruction 'lidt' will read it */
+//read by lidt to see where idt starts+stops
 typedef struct {
     u16 limit; //top of interrupt handlers
     u32 base; //bottom of interrupt handlers
 } __attribute__((packed)) idt_register_t; //packed means there will be no padding between the struct
 
 #define IDT_ENTRIES 256
-idt_gate_t idt[IDT_ENTRIES];
-idt_register_t idt_reg;
+idt_gate_t idt[IDT_ENTRIES]; //initializes idt array using struct
+idt_register_t idt_reg; //initialises idt_reg struct
 
 
 /* Functions implemented in idt.c */
