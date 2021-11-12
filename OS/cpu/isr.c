@@ -41,9 +41,9 @@ void ISRInstall() {
     setIDTGate(30, (u32)isr30);
     setIDTGate(31, (u32)isr31);
 
-    // Remap the PIC
-    writePort(0x20, 0x11);
-    writePort(0xA0, 0x11);
+    // Remap the PIC - Only used for IRQs
+    writePort(0x20, 0x11); //base adress for master PIC
+    writePort(0xA0, 0x11); //base adress for slave PIC
     writePort(0x21, 0x20);
     writePort(0xA1, 0x28);
     writePort(0x21, 0x04);
@@ -74,7 +74,7 @@ void ISRInstall() {
     setIDT(); // Load with ASM
 }
 
-/* To print the message which defines every exception */
+//define exception messages
 char *exception_messages[] = {
     "Division By Zero",
     "Debug",
@@ -118,8 +118,7 @@ void ISRHandler(registers r) {
     print(exception_messages[r.IDTNumber]);
     newLine();
     print("HALTING!!");
-    __asm__ __volatile__("ret" );
-    //__asm__ __volatile__("hlt" );
+    __asm__ __volatile__("ret" ); //return to kernelEntry
    
 }
 
@@ -130,12 +129,12 @@ void registerInterruptHandler(u8 n, isr_t handler) {
 void irq_handler(registers r) {
     /* After every interrupt we need to send an EOI to the PICs
      * or they will not send another interrupt again */
-    if (r.IDTNumber >= 40) writePort(0xA0, 0x20); /* slave */
-    writePort(0x20, 0x20); /* master */
+    if (r.IDTNumber >= 40) writePort(0xA0, 0x20); //if above master PIC values write to slave
+    writePort(0x20, 0x20); //else write to master
 
     /* Handle the interrupt in a more modular way */
     if (interrupt_handlers[r.IDTNumber] != 0) {
-        isr_t handler = interrupt_handlers[r.IDTNumber];
+        isr_t handler = interrupt_handlers[r.IDTNumber]; //call required interrupts handler
         handler(r);
     }
 }
