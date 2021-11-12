@@ -117,7 +117,6 @@ void isr_handler(registers_t r) {
     newLine();
     print("HALTING!!");
     __asm__ __volatile__("ret" ); //return to kernelEntry
-    //__asm__ __volatile__("hlt" );
    
 }
 
@@ -133,7 +132,7 @@ void irq_handler(registers_t r) {
 
     /* Handle the interrupt in a more modular way */
     if (interrupt_handlers[r.int_no] != 0) {
-        isr_t handler = interrupt_handlers[r.int_no];
+        isr_t handler = interrupt_handlers[r.int_no]; //call required interrupts handler
         handler(r);
     }
 }
