@@ -17,17 +17,17 @@ typedef struct { //struct = collection of variables
      * Bits 3-0: bits 1110 = decimal 14 = "32 bit interrupt gate" */
     u8 flags; //stores interrupt type_attr with values above
     u16 highOffset; //offset 16-31 bits
-} __attribute__((packed)) IDTGateArray ; //packed means there will be no padding between the struct
+} __attribute__((packed)) IDTGateArray_Type ; //packed means there will be no padding between the struct
 
 //read by lidt to see where idt starts+stops
 typedef struct {
     u16 limit; //top of interrupt handlers
     u32 base; //bottom of interrupt handlers
-} __attribute__((packed)) IDTRegister; //packed means there will be no padding between the struct
+} __attribute__((packed)) IDTRegister_Type; //packed means there will be no padding between the struct
 
 #define IDT_ENTRIES 256
-IDTGateArray idt[IDT_ENTRIES]; //initializes idt array using struct
-IDTRegister idt_reg; //initialises idt_reg struct
+IDTGateArray_Type idt[IDT_ENTRIES]; //initializes idt array using struct
+IDTRegister_Type idt_reg; //initialises idt_reg struct
 
 
 /* Functions implemented in idt.c */

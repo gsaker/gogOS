@@ -10,7 +10,7 @@ u8 readPort (u16 port) {
 }
 
 void writePort (u16 port, u8 data) {
-    /* Notice how here both registers are mapped to C variables and
+    /* Notice how here both Registers_Type are mapped to C variables and
      * nothing is returned, thus, no equals '=' in the asm syntax 
      * However we see a comma since there are two variables in the input area
      * and none in the 'return' area

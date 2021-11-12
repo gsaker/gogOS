@@ -71,18 +71,18 @@ extern void irq15();
 #define IRQ14 46
 #define IRQ15 47
 
-/* Struct which aggregates many registers */
+/* Struct which aggregates many Registers_Type */
 typedef struct {
    u32 ds; /* Data segment selector */
    u32 edi, esi, ebp, esp, ebx, edx, ecx, eax; /* Pushed by pusha. */
    u32 IDTNumber, errCode; /* Interrupt number and error code (if applicable) */
    u32 eip, cs, eflags, useresp, ss; /* Pushed by the processor automatically */
-} registers;
+} Registers_Type;
 
 void ISRInstall();
-void ISRHandler(registers r);
+void ISRhandler(Registers_Type r);
 
-typedef void (*isr_t)(registers);
-void registerInterruptHandler(u8 n, isr_t handler);
+typedef void (*ISR_t)(Registers_Type);
+void registerInterrupthandler(u8 n, ISR_t handler);
 
 #endif

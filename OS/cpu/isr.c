@@ -3,7 +3,7 @@
 #include "../kernel/util.h"
 #include "../drivers/ports.h"
 
-isr_t interrupt_handlers[256];
+ISR_t interrupt_handlers[256];
 
 /* Can't do this with a loop because we need the address
  * of the function names */
@@ -113,7 +113,7 @@ char *exception_messages[] = {
     "Reserved"
 };
 
-void ISRHandler(registers r) {
+void ISRhandler(Registers_Type r) {
     print("ERROR: ");
     print(exception_messages[r.IDTNumber]);
     newLine();
@@ -122,11 +122,11 @@ void ISRHandler(registers r) {
    
 }
 
-void registerInterruptHandler(u8 n, isr_t handler) {
+void registerInterrupthandler(u8 n, ISR_t handler) {
     interrupt_handlers[n] = handler;
 }
 
-void irq_handler(registers r) {
+void irq_handler(Registers_Type r) {
     /* After every interrupt we need to send an EOI to the PICs
      * or they will not send another interrupt again */
     if (r.IDTNumber >= 40) writePort(0xA0, 0x20); //if above master PIC values write to slave
@@ -134,7 +134,7 @@ void irq_handler(registers r) {
 
     /* Handle the interrupt in a more modular way */
     if (interrupt_handlers[r.IDTNumber] != 0) {
-        isr_t handler = interrupt_handlers[r.IDTNumber]; //call required interrupts handler
+        ISR_t handler = interrupt_handlers[r.IDTNumber]; //call required interrupts handler
         handler(r);
     }
 }

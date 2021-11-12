@@ -56,7 +56,7 @@ printNewLine16:
 ;%include "diskReading.asm"
 loadDisk:
     pusha
-    push dx ; reading from disk changes some registers so save dx value
+    push dx ; reading from disk changes some Registers_Type so save dx value
     mov ah,0x02 ; set BIOS mode (read)
     mov al, dh ;get number of sectors to read from dh
     mov cl, 0x02 ; set sector to read to second sector (after boot sector)
@@ -166,7 +166,7 @@ switch32:
 
 [bits 32]
 init32:
-    mov ax, DATA_SEG ; 5. update the segment registers
+    mov ax, DATA_SEG ; 5. update the segment Registers_Type
     mov ds, ax
     mov ss, ax
     mov es, ax
