@@ -7,7 +7,7 @@
 
 /* How every interrupt gate (handler) is defined */
 typedef struct { //struct = collection of variables
-    u16 low_offset; //offset 0-15 bites
+    u16 lowOffset; //offset 0-15 bites
     u16 sel; //code segment selector
     u8 always0;
     /* First byte
@@ -16,22 +16,22 @@ typedef struct { //struct = collection of variables
      * Bit 4: Set to 0 for interrupt gates
      * Bits 3-0: bits 1110 = decimal 14 = "32 bit interrupt gate" */
     u8 flags; //stores interrupt type_attr with values above
-    u16 high_offset; //offset 16-31 bits
-} __attribute__((packed)) idt_gate_t ; //packed means there will be no padding between the struct
+    u16 highOffset; //offset 16-31 bits
+} __attribute__((packed)) IDTGateArray ; //packed means there will be no padding between the struct
 
 //read by lidt to see where idt starts+stops
 typedef struct {
     u16 limit; //top of interrupt handlers
     u32 base; //bottom of interrupt handlers
-} __attribute__((packed)) idt_register_t; //packed means there will be no padding between the struct
+} __attribute__((packed)) IDTRegister; //packed means there will be no padding between the struct
 
 #define IDT_ENTRIES 256
-idt_gate_t idt[IDT_ENTRIES]; //initializes idt array using struct
-idt_register_t idt_reg; //initialises idt_reg struct
+IDTGateArray idt[IDT_ENTRIES]; //initializes idt array using struct
+IDTRegister idt_reg; //initialises idt_reg struct
 
 
 /* Functions implemented in idt.c */
-void set_idt_gate(int n, u32 handler);
-void set_idt();
+void setIDTGate(int n, u32 handler);
+void setIDT();
 
 #endif

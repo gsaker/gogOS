@@ -2,7 +2,7 @@
 #include "ports.h"
 #include "../cpu/isr.h"
 
-static void keyboard_callback(registers_t regs) {
+static void keyboard_callback(registers regs) {
     //The PIC leaves us the scancode in port 0x60 
     char scancode = readPort(0x60);
     int scancodeInt = scancode;
@@ -15,7 +15,7 @@ static void keyboard_callback(registers_t regs) {
 }
 
 void init_keyboard() {
-   register_interrupt_handler(IRQ1, keyboard_callback); 
+   registerInterruptHandler(IRQ1, keyboard_callback); 
 }
 
 void print_letter(u8 scancode) {
