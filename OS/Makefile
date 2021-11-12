@@ -4,7 +4,7 @@ HEADERS = $(wildcard kernel/*.h drivers/*.h cpu/*.h libc/*.h)
 OBJ = ${C_SOURCES:.c=.o cpu/interrupt.o} 
 
 # Change this if your cross-compiler is somewhere else
-CC = i686-elf-gcc
+CC = ../Bin/i386-elf-7.5.0-Linux-x86_64/bin/i386-elf-gcc
 GDB = /usr/local/i386elfgcc/bin/i386-elf-gdb
 # -g: Use debugging symbols in gcc
 CFLAGS = -g 
@@ -16,11 +16,11 @@ os-image.bin: boot/boot.bin kernel.bin
 # '--oformat binary' deletes all symbols as a collateral, so we don't need
 # to 'strip' them manually on this case
 kernel.bin: boot/kernelEntry.o ${OBJ}
-	i686-elf-ld -o $@ -Ttext 0x1000 $^ --oformat binary
+	../Bin/i386-elf-7.5.0-Linux-x86_64/bin/i386-elf-ld -o $@ -Ttext 0x1000 $^ --oformat binary
 
 # Used for debugging purposes
 kernel.elf: boot/kernelEntry.o ${OBJ}
-	i686-elf-ld -o $@ -Ttext 0x1000 $^ 
+	../Bin/i386-elf-7.5.0-Linux-x86_64/bin/i386-elf-ld -o $@ -Ttext 0x1000 $^ 
 
 runemu: os-image.bin
 	qemu-system-x86_64 -fda os-image.bin
