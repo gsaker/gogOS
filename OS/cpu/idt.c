@@ -2,7 +2,7 @@
 #include "../kernel/util.h"
 
 void set_idt_gate(int n, u32 handler) {
-    idt[n].low_offset = low_16(handler); //
+    idt[n].low_offset = low_16(handler); //set low offset 
     idt[n].sel = KERNEL_CS; //set correct segment
     idt[n].always0 = 0; //set to 0??
     idt[n].flags = 0x8E; //basic interrupt gate flag

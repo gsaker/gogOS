@@ -26,7 +26,7 @@ typedef struct {
     u32 base; //bottom of interrupt handlers
 } __attribute__((packed)) idt_register_t; //packed means there will be no padding between the struct
 
-#define IDT_ENTRIES 256
+#define IDT_ENTRIES 256 //set total number of entries
 idt_gate_t idt[IDT_ENTRIES];
 idt_register_t idt_reg;
 
