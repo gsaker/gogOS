@@ -5,10 +5,8 @@
 
 isr_t interrupt_handlers[256];
 
-/* Can't do this with a loop because we need the address
- * of the function names */
 void isr_install() {
-    set_idt_gate(0, (u32)isr0);
+    set_idt_gate(0, (u32)isr0); //setup parameters for each isr value
     set_idt_gate(1, (u32)isr1);
     set_idt_gate(2, (u32)isr2);
     set_idt_gate(3, (u32)isr3);
@@ -41,9 +39,9 @@ void isr_install() {
     set_idt_gate(30, (u32)isr30);
     set_idt_gate(31, (u32)isr31);
 
-    // Remap the PIC
-    writePort(0x20, 0x11);
-    writePort(0xA0, 0x11);
+    // Remap the PIC - Only used for IRQs
+    writePort(0x20, 0x11); //base adress for master PIC
+    writePort(0xA0, 0x11); //base adress for slave PIC
     writePort(0x21, 0x20);
     writePort(0xA1, 0x28);
     writePort(0x21, 0x04);
@@ -54,7 +52,7 @@ void isr_install() {
     writePort(0xA1, 0x0); 
 
     // Install the IRQs
-    set_idt_gate(32, (u32)irq0);
+    set_idt_gate(32, (u32)irq0); //same for IRQs
     set_idt_gate(33, (u32)irq1);
     set_idt_gate(34, (u32)irq2);
     set_idt_gate(35, (u32)irq3);
@@ -74,7 +72,7 @@ void isr_install() {
     set_idt(); // Load with ASM
 }
 
-/* To print the message which defines every exception */
+//define exception messages
 char *exception_messages[] = {
     "Division By Zero",
     "Debug",
@@ -114,11 +112,11 @@ char *exception_messages[] = {
 };
 
 void isr_handler(registers_t r) {
-    print("ERROR: ");
-    print(exception_messages[r.int_no]);
+    print("ERROR: "); 
+    print(exception_messages[r.int_no]); //print expecption
     newLine();
     print("HALTING!!");
-    __asm__ __volatile__("ret" );
+    __asm__ __volatile__("ret" ); //return to kernelEntry
     //__asm__ __volatile__("hlt" );
    
 }
@@ -130,8 +128,8 @@ void register_interrupt_handler(u8 n, isr_t handler) {
 void irq_handler(registers_t r) {
     /* After every interrupt we need to send an EOI to the PICs
      * or they will not send another interrupt again */
-    if (r.int_no >= 40) writePort(0xA0, 0x20); /* slave */
-    writePort(0x20, 0x20); /* master */
+    if (r.int_no >= 40) writePort(0xA0, 0x20); //if above master PIC values write to slave
+    writePort(0x20, 0x20); //else write to master
 
     /* Handle the interrupt in a more modular way */
     if (interrupt_handlers[r.int_no] != 0) {

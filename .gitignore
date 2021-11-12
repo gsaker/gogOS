@@ -7,3 +7,6 @@ os-tutorial-master
 *.sym
 .DS_STORE
 
+Resources/hybridos
+.gitignore
+Resources/64bitTest/gnu-efi
