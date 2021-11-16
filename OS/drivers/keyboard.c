@@ -1,6 +1,8 @@
-#include "keyboard.h"
-#include "ports.h"
+
 #include "../cpu/isr.h"
+#include "../misc/types.h"
+
+void init_keyboard();
 
 static void keyboard_callback(Registers_Type regs) {
     //The PIC leaves us the scancode in port 0x60 
