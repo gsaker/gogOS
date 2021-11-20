@@ -21,7 +21,8 @@ void init_keyboard() {
 }
 
 void print_letter(u8 scancode) {
-    
+    processInput(scancode);
+   /*
     switch (scancode) {
         case 0x0:
             print("ERROR");
@@ -29,10 +30,11 @@ void print_letter(u8 scancode) {
         case 0x1:
             break;
         case 0x2:
-            print("1");
+            processInput(0x2);
             break;
         case 0x3:
-            print("2");
+            //print("2");
+            processInput(0x3);
             break;
         case 0x4:
             print("3");
@@ -199,6 +201,6 @@ void print_letter(u8 scancode) {
         default:
             break;
     }
-    
+    */
 }
 
