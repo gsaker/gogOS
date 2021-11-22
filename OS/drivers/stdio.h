@@ -6,6 +6,8 @@ int currentColumn = 0;
 int currentRow = 0;
 char buffer [MAXCHAR];
 char currentChar;
+char commandEntered [MAXCHAR];
+int singleChar = 1;
 void clearLine(int row);
 
 void printStr(char stringToPrint [], int row, int column);
@@ -14,32 +16,103 @@ void clearLine(int row);
 void newLine();
 void print(char stringToPrint[]);
 void printInt(int number);
-void addToShellBuffer(u8 scancode);
-void append(char* s, char c);
 
 void processInput(u8 scancode){
-    //character = getChar(scancode);
-    //addToBuffer(character);
     clearScreen();
     getChar(scancode);
-    int len = strLen(buffer);
-    buffer[len++] = currentChar;
-    buffer[len] = '\0';
+    if (singleChar) {addCharToBuffer(currentChar);};
     print(buffer);
 }
 
-void addToBuffer(char character){
+void addCharToBuffer(char character){
     int len = strLen(buffer);
-    buffer[len++] = currentChar;
+    buffer[len++] = character;
     buffer[len] = '\0';
-    print(buffer);
 }
+void enterKeyPressed(){
+    copyString(buffer,commandEntered);
+    newLine();
+    print("Command:");
+    newLine();
+    print(commandEntered);
+    newLine();
+    clearString(buffer);
+    shell(commandEntered);
+}
+void copyString(char stringIn [], char stringOut []){
+    for (int currentChar = 0; currentChar <= strLen(stringIn); currentChar++){ //loop through string, stopping when reached the length of string
+        stringOut[currentChar] = stringIn[currentChar];
+    }
+}
+void shell(char command [] ){
+    char arg [MAXCHAR];
+    char arg1 [MAXCHAR];
+    char arg2 [MAXCHAR];
+    char arg3 [MAXCHAR];
+    char arg4 [MAXCHAR];
+    char arg5 [MAXCHAR];
+    char arg6 [MAXCHAR];
+
+    int argNum = 0;
+    
+    for (int currentChar = 0; currentChar <= strLen(command); currentChar++){ //loop through string, stopping when reached the length of string
+        if (command[currentChar] == ' ' || command[currentChar] == '\0'){
+            argNum = argNum + 1;
+            newLine();
+            switch(argNum){
+                case 1:
+                    copyString(arg,arg1);
+                    print("ARG1:");
+                    print(arg1);
+                    break;
+                case 2:
+                    copyString(arg,arg2);
+                    print("ARG2:");
+                    print(arg2);
+                    break;
+                case 3:
+                    copyString(arg,arg3);
+                    print("ARG3:");
+                    print(arg3);
+                    break;
+                case 4:
+                    copyString(arg,arg4);
+                    print("ARG4:");
+                    print(arg4);
+                    break;
+                case 5:
+                    copyString(arg,arg5);
+                    print("ARG5:");
+                    print(arg5);
+                    break;
+                case 6:
+                    copyString(arg,arg6);
+                    print("ARG6:");
+                    print(arg6);
+                    break;
+                newLine();
+            }
+            clearString(arg);
+            
+            
+        }
+        else{
+            int len = strLen(arg);
+            arg[len++] = command[currentChar];
+            arg[len] = '\0';
+        }
+}
+}
+void clearString(char string []){
+    string[0] = '\0';
+}
+
 void getChar(u8 scancode) {
-
     int len;
+    singleChar = 1;
     switch (scancode) {
         case 0x0:
-            currentChar = 'ERROR';
+            currentChar = "ERROR";
             break;
         case 0x1:
             break;
@@ -122,7 +195,9 @@ void getChar(u8 scancode) {
 			 currentChar = ']';
 			break;
 		case 0x1C:
-			 currentChar = 'ENTER';
+        singleChar = 0;
+			 enterKeyPressed();
+
 			break;
 		case 0x1D:
 			 currentChar = 'LCtrl';
@@ -209,13 +284,11 @@ void getChar(u8 scancode) {
              currentChar = 'LAlt';
             break;
         case 0x39:
-             currentChar = 'Spc';
+             currentChar = ' ';
             break;
         default:
             break;
     }
-
-
 }
 
 

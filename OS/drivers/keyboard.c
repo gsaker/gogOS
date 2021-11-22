@@ -21,7 +21,9 @@ void init_keyboard() {
 }
 
 void print_letter(u8 scancode) {
+    if (scancode <= 0x39){
     processInput(scancode);
+    }
    /*
     switch (scancode) {
         case 0x0:
