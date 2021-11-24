@@ -1,7 +1,11 @@
 
 #include "../cpu/isr.h"
 #include "../misc/types.h"
-
+#define MAXCHAR 1000
+char buffer [MAXCHAR];
+char currentChar;
+char commandEntered [MAXCHAR];
+int singleChar = 1;
 void init_keyboard();
 
 static void keyboard_callback(Registers_Type regs) {
@@ -24,185 +28,217 @@ void print_letter(u8 scancode) {
     if (scancode <= 0x39){
     processInput(scancode);
     }
-   /*
+}
+void addCharToBuffer(char character){
+    int len = strLen(buffer);
+    buffer[len++] = character;
+    buffer[len] = '\0';
+}
+void enterKeyPressed(){
+    copyString(buffer,commandEntered);
+    newLine();
+    print("Entered:");
+    newLine();
+    print(commandEntered);
+    newLine();
+    clearString(buffer);
+    splitArgs(commandEntered);
+}
+void backspaceKeyPressed(){
+    removeLastCharBuffer();
+}
+void removeLastCharBuffer(){
+    int len = strLen(buffer);
+    buffer[len-1] = '\0';
+}
+
+void processInput(u8 scancode){
+    clearScreen();
+    getChar(scancode);
+    if (singleChar) {addCharToBuffer(currentChar);};
+    print(buffer);
+}
+void getChar(u8 scancode) {
+    int len;
+    singleChar = 1;
     switch (scancode) {
         case 0x0:
-            print("ERROR");
+            currentChar = "ERROR";
             break;
         case 0x1:
             break;
         case 0x2:
-            processInput(0x2);
+            currentChar = '1';
             break;
         case 0x3:
-            //print("2");
-            processInput(0x3);
+            currentChar = '2';
             break;
         case 0x4:
-            print("3");
+             currentChar = '3';
             break;
         case 0x5:
-            print("4");
+             currentChar = '4';
             break;
         case 0x6:
-            print("5");
+             currentChar = '5';
             break;
         case 0x7:
-            print("6");
+             currentChar = '6';
             break;
         case 0x8:
-            print("7");
+             currentChar = '7';
             break;
         case 0x9:
-            print("8");
+             currentChar = '8';
             break;
         case 0x0A:
-            print("9");
+             currentChar = '9';
             break;
         case 0x0B:
-            print("0");
+             currentChar = '0';
             break;
         case 0x0C:
-            print("-");
+             currentChar = '-';
             break;
         case 0x0D:
-            print("+");
+             currentChar = '+';
             break;
         case 0x0E:
-            print("Backspace");
+            singleChar = 0;
+            backspaceKeyPressed();
             break;
         case 0x0F:
-            print("Tab");
+             currentChar = 'Tab';
             break;
         case 0x10:
-            print("Q");
+             currentChar = 'Q';
             break;
         case 0x11:
-            print("W");
+             currentChar = 'W';
             break;
         case 0x12:
-            print("E");
+             currentChar = 'E';
             break;
         case 0x13:
-            print("R");
+             currentChar = 'R';
             break;
         case 0x14:
-            print("T");
+             currentChar = 'T';
             break;
         case 0x15:
-            print("Y");
+             currentChar = 'Y';
             break;
         case 0x16:
-            print("U");
+             currentChar = 'U';
             break;
         case 0x17:
-            print("I");
+             currentChar = 'I';
             break;
         case 0x18:
-            print("O");
+             currentChar = 'O';
             break;
         case 0x19:
-            print("P");
+             currentChar = 'P';
             break;
 		case 0x1A:
-			print("[");
+			 currentChar = '[';
 			break;
 		case 0x1B:
-			print("]");
+			 currentChar = ']';
 			break;
 		case 0x1C:
-			print("ENTER");
+        singleChar = 0;
+			 enterKeyPressed();
+
 			break;
 		case 0x1D:
-			print("LCtrl");
+			 currentChar = 'LCtrl';
 			break;
 		case 0x1E:
-			print("A");
+			 currentChar = 'A';
 			break;
 		case 0x1F:
-			print("S");
+			 currentChar = 'S';
 			break;
         case 0x20:
-            print("D");
+             currentChar = 'D';
             break;
         case 0x21:
-            print("F");
+             currentChar = 'F';
             break;
         case 0x22:
-            print("G");
+             currentChar = 'G';
             break;
         case 0x23:
-            print("H");
+             currentChar = 'H';
             break;
         case 0x24:
-            print("J");
+             currentChar = 'J';
             break;
         case 0x25:
-            print("K");
+             currentChar = 'K';
             break;
         case 0x26:
-            print("L");
+             currentChar = 'L';
             break;
         case 0x27:
-            print(";");
+             currentChar = ';';
             break;
         case 0x28:
-            print("'");
+             currentChar = ' ';
             break;
         case 0x29:
-            print("`");
+             currentChar = '`';
             break;
 		case 0x2A:
-			print("LShift");
+			 currentChar = 'LShift';
 			break;
 		case 0x2B:
-			print("\\");
+			 currentChar = '\\';
 			break;
 		case 0x2C:
-			print("Z");
+			 currentChar = 'Z';
 			break;
 		case 0x2D:
-			print("X");
+			 currentChar = 'X';
 			break;
 		case 0x2E:
-			print("C");
+			 currentChar = 'C';
 			break;
 		case 0x2F:
-			print("V");
+			 currentChar = 'V';
 			break;
         case 0x30:
-            print("B");
+             currentChar = 'B';
             break;
         case 0x31:
-            print("N");
+             currentChar = 'N';
             break;
         case 0x32:
-            print("M");
+             currentChar = 'M';
             break;
         case 0x33:
-            print(",");
+             currentChar = ',';
             break;
         case 0x34:
-            print(".");
+             currentChar = '.';
             break;
         case 0x35:
-            print("/");
+             currentChar = '/';
             break;
         case 0x36:
-            print("Rshift");
+             currentChar = 'Rshift';
             break;
         case 0x37:
-            print("Keypad *");
+             currentChar = 'Keypad *';
             break;
         case 0x38:
-            print("LAlt");
+             currentChar = 'LAlt';
             break;
         case 0x39:
-            print("Spc");
+             currentChar = ' ';
             break;
         default:
             break;
     }
-    */
 }
-

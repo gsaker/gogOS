@@ -8,7 +8,7 @@ CC = ../Bin/i386-elf-7.5.0-Linux-x86_64/bin/i386-elf-gcc
 GDB = /usr/local/i386elfgcc/bin/i386-elf-gdb
 # -g: Use debugging symbols in gcc
 CFLAGS = -g 
-run: runemu clean
+run: runemu #clean
 # First rule is run by default
 os-image.bin: boot/boot.bin kernel.bin
 	cat $^ > os-image.bin
