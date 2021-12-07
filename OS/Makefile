@@ -10,8 +10,8 @@ GDB = /usr/local/i386elfgcc/bin/i386-elf-gdb
 CFLAGS = -g 
 run: runemu #clean
 # First rule is run by default
-os-image.bin: boot/boot.bin kernel.bin
-	cat $^ > os-image.bin
+os-image.iso: boot/boot.bin kernel.bin
+	cat $^ > os-image.iso
 
 # '--oformat binary' deletes all symbols as a collateral, so we don't need
 # to 'strip' them manually on this case
@@ -22,8 +22,8 @@ kernel.bin: boot/kernelEntry.o ${OBJ}
 kernel.elf: boot/kernelEntry.o ${OBJ}
 	../Bin/i386-elf-7.5.0-Linux-x86_64/bin/i386-elf-ld -o $@ -Ttext 0x1000 $^ 
 
-runemu: os-image.bin
-	qemu-system-x86_64 -fda os-image.bin
+runemu: os-image.iso
+	qemu-system-x86_64 -fda os-image.iso
 
 # Open the connection to qemu and load our kernel-object file with symbols
 debug: os-image.bin kernel.elf

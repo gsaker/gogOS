@@ -1,6 +1,5 @@
-
 #define MAXCHAR 1000
-
+#include "clock.c"
 #include "../misc/colours.h"
 int currentColumn = 0;
 int currentRow = 0;
@@ -175,4 +174,15 @@ void printInt(int number){
         print(charValue);          // print
         rev = rev / 10;            // divide by 10 1:7, 2:0
     }                              // finished
+}
+void printTime(){
+    read_rtc();
+    newLine();
+    print("Time:");
+    newLine();
+    printInt(hour);
+    print(":");
+    printInt(minute);
+    print(":");
+    printInt(second);
 }

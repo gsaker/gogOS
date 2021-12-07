@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "vars.h": "c",
-        "string": "c"
+        "string": "c",
+        "util.h": "c"
     }
 }
