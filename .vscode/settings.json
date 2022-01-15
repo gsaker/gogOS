@@ -2,6 +2,7 @@
     "files.associations": {
         "vars.h": "c",
         "string": "c",
-        "util.h": "c"
+        "util.h": "c",
+        "shell.h": "c"
     }
 }

@@ -1,3 +1,4 @@
+
 [org 0x7c00]
 KERNEL_OFFSET equ 0x1000 ; The same one we used when linking the kernel
     mov [BOOT_DRIVE], dl ; set boot drive, this is set by BIOS in dl
@@ -179,7 +180,7 @@ init32:
     call BEGIN_32 ; 7. Call a well-known label with useful code
 ;%include "printHex16.asm"
 
-BOOT_DRIVE db 0 ; It is a good idea to store it in memory because 'dl' may get overwritten
+BOOT_DRIVE db 1 ; It is a good idea to store it in memory because 'dl' may get overwritten
 MSG_16_MODE db "Started in 16-bit Real Mode", 0
 MSG_32_MODE db "Landed in 32-bit Protected Mode", 0
 MSG_LOAD_KERNEL db "Loading kernel into memory", 0
@@ -202,4 +203,12 @@ BEGIN_32:
     jmp $ ; back here whern kernel has finished
 
 times 510 - ($-$$) db 0
-dw 0xaa55
+dw 0xaa55 ; Boot Sector Signature (Mark as Bootable)
+
+; Basic Boot Sector (FAT32)
+; 3 Bytes Boot Jump Code
+; 8 Bytes OEM ID
+; BIOS Parameter Block (Sizes and FAT Sections and offsets) (32 bytes)
+; Extended BIOS BLock
+; BootStrap Code
+; Signature (0x55AA)
